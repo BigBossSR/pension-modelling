@@ -30,6 +30,7 @@ ui <- shinyUI(fluidPage(
     uiOutput("timeSlider"),br(), 
     
     #Can put these in more structured setup - divs etc
+    div( class="payoff",
     h4("PAYOFF"), hr(),
       sliderInput('tfr',"Target Funding Ratio",0,120,100,step=5),
       
@@ -39,8 +40,8 @@ ui <- shinyUI(fluidPage(
                                 " off the shortfall. The longer you take the more interest you pay"),
                 placement = "right", trigger = "hover"),
       
-      sliderInput('amortdelay',"Amortization Delay",0,10,0,step=1),
-    
+      sliderInput('amortdelay',"Amortization Delay",0,10,0,step=1)
+    ),
     h4("VALUATION"), hr(),
       sliderInput('disc','Discount Rate',0,10,5,step=0.5),
       bsPopover(id = "disc", title = "Change the Discount Rate", 
@@ -118,5 +119,7 @@ ui <- shinyUI(fluidPage(
                 "Amortization of UAAL" = 11),selected=1),br(),
                 downloadButton('downloadData','Download'))
     )
-  )
+  ),
+  tags$script(src="custom.js")
 ))
+
