@@ -1,3 +1,31 @@
+hr {
+	border-top: solid 2px rgb(153, 153, 153);
+}
+
+#funding {
+	margin-right: -2px;
+	display: inline-block;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+#amortization {
+	margin-left: -2px;
+	display: inline-block;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.btn {
+	color: RGB(6, 112, 223);
+}
+
+.btn-active {
+	background-color: RGB(6, 112, 223);
+	color: white;
+	font-weight: bold;
+}
+
 .well {
 	border: none;
 	border-radius: 0px;
@@ -6,3 +34,4 @@
 .popover {
 	width: 100%;
 }
+

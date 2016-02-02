@@ -23,7 +23,7 @@ ui <- shinyUI(fluidPage(
     p("explainer text"),
     h5("Pension System"),hr(),
     h5("Model View"),
-    actionButton("funding", label = "Funding"), actionButton("amortization", label = "Amortization"),
+    actionButton("funding", label = "Funding", class="btn-active"), actionButton("amortization", label = "Amortization"),
     br(),
     h4("POPULATION"), hr(),
     #timeSlider is controlled elsewhere
@@ -75,17 +75,26 @@ ui <- shinyUI(fluidPage(
                 content = paste("We used average retirement patterns from the actuarial reports, ",
                                 "this can shift it later"),
                 placement = "right", trigger = "hover"),
-
-    width = 3
+    h4("DOWNLOAD MODEL"), hr(),
+    selectInput('forecastData',"Select Forecast",choices=c("Initial Annuitant Forecast" = 1,"Initial Annuitant Benefits Forecast" = 2, 
+                                                           "Initial Survivor Forecast" = 3, "Initial Survivor Benefits Forecast" = 4, "Initial Actives Forecast" = 5, "Beneficiaries from Actives Forecast" = 6, 
+                                                           "Actives Benefits Forecast" = 7, "Initial Inactives Forecast" = 8, "Beneficiares from Inactives Forecast" = 9, "Initial Inactives Benefits Forecast" = 10,
+                                                           "Amortization of UAAL" = 11),selected=1),br(),
+    downloadButton('downloadData','Download'),
+    width = 4
   ),
   
   mainPanel(
     br(),
-    hr(),
     h3("Population Distribution",align="center"),
     br(),plotOutput('count_plot'),br(),
     p("This projects the distribution of pension recipients into the future if new expenses stopped today."),
     hr(),
+    plotOutput('assetliabilityPlot'), #, width = "250px", height = "250px"),
+    hr(),
+    plotOutput('flowsPlot'),
+    hr(),
+    plotOutput("amortPlot"),
     
     
     
@@ -93,19 +102,19 @@ ui <- shinyUI(fluidPage(
     tabsetPanel(
       tabPanel("Funding",br(),br(),
                #hr(),
-               plotOutput('assetliabilityPlot'), #, width = "250px", height = "250px"),
+             
                p("The Asset Liability Plot displays the total assets of the pension fund, compared to the projected liabilities, and currently unfunded remainder."),
                #textOutput('pensionAssets'),
                #textOutput('pensionLiabilities'),
                #textOutput('fundingRatio'),
                #textOutput('contributionTarget'),
-               br(),hr(),plotOutput('flowsPlot'),
+               br(),hr(),
                p("The Flows Plot models projected pension benefits in millions of dollars to various groups of payees.")
                ),
       
       tabPanel("Amortization",br(),br(),
                h3(textOutput('requiredAnnualContribution'),align='center'),br(),
-               plotOutput('amortPlot'),br(),
+               br(),
                p("This graph projects the state's pension commitment if new expenses stopped today. The black line reflects the cashflow (in millions of dollars) necessary to honor the state's pension commitment. Asset income and state payment reflect money going into the system, while benefits paid reflect money paid out.")
                
                ),
@@ -113,11 +122,7 @@ ui <- shinyUI(fluidPage(
                ,br(),tableOutput('details'),align="center"),
       tabPanel("Population"
                ),
-      tabPanel("Downloads",br(),selectInput('forecastData',"Select Forecast",choices=c("Initial Annuitant Forecast" = 1,"Initial Annuitant Benefits Forecast" = 2, 
-                "Initial Survivor Forecast" = 3, "Initial Survivor Benefits Forecast" = 4, "Initial Actives Forecast" = 5, "Beneficiaries from Actives Forecast" = 6, 
-                "Actives Benefits Forecast" = 7, "Initial Inactives Forecast" = 8, "Beneficiares from Inactives Forecast" = 9, "Initial Inactives Benefits Forecast" = 10,
-                "Amortization of UAAL" = 11),selected=1),br(),
-                downloadButton('downloadData','Download'))
+      tabPanel("Downloads",br())
     )
   ),
   tags$script(src="custom.js")
