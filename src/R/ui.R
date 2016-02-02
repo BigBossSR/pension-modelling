@@ -85,45 +85,41 @@ ui <- shinyUI(fluidPage(
   ),
   
   mainPanel(
-    br(),
-    h3("Population Distribution",align="center"),
-    br(),plotOutput('count_plot'),br(),
-    p("This projects the distribution of pension recipients into the future if new expenses stopped today."),
-    hr(),
-    plotOutput('assetliabilityPlot'), #, width = "250px", height = "250px"),
-    hr(),
-    plotOutput('flowsPlot'),
-    hr(),
-    plotOutput("amortPlot"),
-    
-    
-    
-    
     tabsetPanel(
-      tabPanel("Funding",br(),br(),
-               #hr(),
-             
-               p("The Asset Liability Plot displays the total assets of the pension fund, compared to the projected liabilities, and currently unfunded remainder."),
-               #textOutput('pensionAssets'),
-               #textOutput('pensionLiabilities'),
-               #textOutput('fundingRatio'),
-               #textOutput('contributionTarget'),
-               br(),hr(),
-               p("The Flows Plot models projected pension benefits in millions of dollars to various groups of payees.")
-               ),
-      
-      tabPanel("Amortization",br(),br(),
-               h3(textOutput('requiredAnnualContribution'),align='center'),br(),
-               br(),
-               p("This graph projects the state's pension commitment if new expenses stopped today. The black line reflects the cashflow (in millions of dollars) necessary to honor the state's pension commitment. Asset income and state payment reflect money going into the system, while benefits paid reflect money paid out.")
-               
-               ),
+      tabPanel( "Graphs",
+                br(),
+                div(class="population-container",
+                    h3("Population Distribution",align="center"),
+                    br(),plotOutput('count_plot'),br(),
+                    p("This projects the distribution of pension recipients into the future if new expenses stopped today."),
+                    hr()
+                ),
+                div(class="liability-container",
+                    plotOutput('assetliabilityPlot'), #, width = "250px", height = "250px"),
+                    p("The Asset Liability Plot displays the total assets of the pension fund, compared to the projected liabilities, and currently unfunded remainder."),
+                    hr()
+                ),
+                div(class="flows-container",
+                    plotOutput('flowsPlot'),
+                    p("The Flows Plot models projected pension benefits in millions of dollars to various groups of payees."),
+                    hr()
+                ),
+                div(class="amort-container",
+                    h3(textOutput('requiredAnnualContribution'),align='center'),br(),
+                    plotOutput("amortPlot"),
+                    p("This graph projects the state's pension commitment if new expenses stopped today. The black line reflects the cashflow (in millions of dollars) necessary to honor the state's pension commitment. Asset income and state payment reflect money going into the system, while benefits paid reflect money paid out."),
+                    hr()
+                )
+      ),
       tabPanel("Valuation Details",br(),h3("Results of Actuarial Valuation")
-               ,br(),tableOutput('details'),align="center"),
-      tabPanel("Population"
-               ),
-      tabPanel("Downloads",br())
+               ,br(),tableOutput('details'),align="center"
+      )
     )
+    
+    
+    
+    
+    
   ),
   tags$script(src="custom.js")
 ))

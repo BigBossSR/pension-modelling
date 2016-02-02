@@ -3,13 +3,13 @@ $(document).on("ready", function(){
 	var payoffEls = $(".payoff");
 
 	var charts = {
-		fundedRatio: $("#assetliabilityPlot"),
-		annualPayment: $("#flowsPlot"),
-		fundingPeriod: $("#amortPlot")
+		fundedRatio: $(".liability-container"),
+		annualPayment: $(".flows-container"),
+		fundingPeriod: $(".amort-container")
 	};
 
 	$(payoffEls).slideUp();
-	$(charts.fundingPeriod).hide();
+	
 
 	$("#amortization").on("click", function(){
 		$(this).addClass("btn-active");
@@ -34,4 +34,8 @@ $(document).on("ready", function(){
 
 
 
+
+	
+
+	$(charts.fundingPeriod).hide();
 })
