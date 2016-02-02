@@ -8,55 +8,30 @@ ui <- shinyUI(fluidPage(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
   ),
-  #includescript to use JS and make stuff hide and show
   
   titlePanel(h1("Public Pensions Modeling", align="left")),
-  
-  h4("General Assembly Retirement System (GARS) Illinois"),
   
   p( tags$small("The graphs below project the state of the Illinois pension fund. By adjusting variables like inflation rate, mortality, and salary growth you can forecast how changes will affect pension liability.")
     
   ), br(),
   
   sidebarPanel(
-    h2("Build a Model"),
-    p("explainer text"),
-    h5("Pension System"),hr(),
-    h5("Model View"),
-    actionButton("funding", label = "Funding"), actionButton("amortization", label = "Amortization"),
-    br(),
-    h4("POPULATION"), hr(),
-    #timeSlider is controlled elsewhere
-    uiOutput("timeSlider"),br(), 
-    
-    #Can put these in more structured setup - divs etc
-    h4("PAYOFF"), hr(),
-      sliderInput('tfr',"Target Funding Ratio",0,120,100,step=5),
-      
-      sliderInput('amort',"Amortization Period",0,60,30,step=5),
-      bsPopover(id = "amort", title = "How long to pay off the shortfall?", 
-                content = paste("Use this slider to set a period the state will pay",
-                                " off the shortfall. The longer you take the more interest you pay"),
-                placement = "right", trigger = "hover"),
-      
-      sliderInput('amortdelay',"Amortization Delay",0,10,0,step=1),
-    
-    h4("VALUATION"), hr(),
+    tabsetPanel(
+    tabPanel("Valuation",br(),
       sliderInput('disc','Discount Rate',0,10,5,step=0.5),
       bsPopover(id = "disc", title = "Change the Discount Rate", 
                 content = paste("Placeholder: Discount rate is basically the reverse of the inflation rate between now and some point in the future."),
                 placement = "right", trigger = "hover"),
-      
+      #sliderInput('ror',"Asset Rate of Return",0,10,5,step=0.5),
+      #sliderInput('cof',"Cost of Funds",0,10,5,step=0.5),
       sliderInput('ben',"Benefit Growth Rate", 0, 10, 3,step=0.5),
       bsPopover(id='ben', title = "Change the Growth Rate",
                 content = paste("Placeholder: The rate at which benefits are expected to grow"),
                 placement = "right", trigger = "hover"),
-      
       sliderInput('inf',"Inflation Rate",0,10,3,step=0.5),
       bsPopover(id='inf', title = "Change the Inflation Rate",
                 content = paste("Placeholder: The rate at which currency is expected to depreciate"),
                 placement = "right", trigger = "hover"),
-      
       sliderInput('salary',"Salary Growth Rate", 0, 10, 3.5, step=0.5),
       bsPopover(id='salary', title = "Change the Salary Growth Rate",
                 content = paste("Placeholder: The rate at which state salaries are expected to grow"),
@@ -68,27 +43,30 @@ ui <- shinyUI(fluidPage(
                                 "acturial report. This can shift table to reflect a ",
                                 "longer life expectency"),
                 placement = "right", trigger = "hover"),
+    
       
       sliderInput('retire',"Retirement Delay",0, 10, 0),
       bsPopover(id = "retire", title = "Delay the average retirement age", 
                 content = paste("We used average retirement patterns from the actuarial reports, ",
                                 "this can shift it later"),
-                placement = "right", trigger = "hover"),
-
+                placement = "right", trigger = "hover")),
+    
+    tabPanel("Payoff",br(),
+             sliderInput('tfr',"Target Funding Ratio",0,120,100,step=5),
+             sliderInput('amort',"Amortization Period",0,60,30,step=5),
+             bsPopover(id = "amort", title = "How long to pay off the shortfall?", 
+                       content = paste("Use this slider to set a period the state will pay",
+                                       " off the shortfall. The longer you take the more interest you pay"),
+                       placement = "right", trigger = "hover"),
+             sliderInput('amortdelay',"Amortization Delay",0,10,0,step=1)
+      )),
+      #sliderInput('npers',"Years in Forecast",10,100,30,step=5),
+      #sliderInput('rr',"Replacement Rate",0, 2, 0, step=0.1),
+      #sliderInput('cont',"Contribution Rate", 0, 15, 11, step=1))),
     width = 3
   ),
   
   mainPanel(
-    br(),
-    hr(),
-    h3("Population Distribution",align="center"),
-    br(),plotOutput('count_plot'),br(),
-    p("This projects the distribution of pension recipients into the future if new expenses stopped today."),
-    hr(),
-    
-    
-    
-    
     tabsetPanel(
       tabPanel("Funding",br(),br(),
                #hr(),
@@ -110,7 +88,12 @@ ui <- shinyUI(fluidPage(
                ),
       tabPanel("Valuation Details",br(),h3("Results of Actuarial Valuation")
                ,br(),tableOutput('details'),align="center"),
-      tabPanel("Population"
+      tabPanel("Population",br(),
+               uiOutput("timeSlider"),hr(),
+               h3("Population Distribution",align="center"),
+               br(),plotOutput('count_plot'),br(),
+               p("This projects the distribution of pension recipients into the future if new expenses stopped today.")
+               
                ),
       tabPanel("Downloads",br(),selectInput('forecastData',"Select Forecast",choices=c("Initial Annuitant Forecast" = 1,"Initial Annuitant Benefits Forecast" = 2, 
                 "Initial Survivor Forecast" = 3, "Initial Survivor Benefits Forecast" = 4, "Initial Actives Forecast" = 5, "Beneficiaries from Actives Forecast" = 6, 
