@@ -35,7 +35,7 @@ $(document).on("ready", function(){
 
 
 
-	
 
-	$(charts.fundingPeriod).hide();
+
+	$(charts.fundingPeriod).slideUp();
 })

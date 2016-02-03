@@ -8,7 +8,6 @@ ui <- shinyUI(fluidPage(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
   ),
-  #includescript to use JS and make stuff hide and show
   
   titlePanel(h1("Public Pensions Modeling", align="left")),
   
@@ -90,7 +89,7 @@ ui <- shinyUI(fluidPage(
                 br(),
                 div(class="population-container",
                     h3("Population Distribution",align="center"),
-                    br(),plotOutput('count_plot'),br(),
+                    br(),plotOutput('count_plot', height='250px'),br(),
                     p("This projects the distribution of pension recipients into the future if new expenses stopped today."),
                     hr()
                 ),
@@ -115,11 +114,6 @@ ui <- shinyUI(fluidPage(
                ,br(),tableOutput('details'),align="center"
       )
     )
-    
-    
-    
-    
-    
   ),
   tags$script(src="custom.js")
 ))
